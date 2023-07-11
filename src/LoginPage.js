@@ -12,15 +12,9 @@ const LoginPage = () =>{
 						Login
 					</span>
 
-					<div class="wrap-input100 validate-input" data-validate = "Username is reauired">
-						<span class="label-input100">Username</span>
-						<input class="input100" type="text" name="username" placeholder="Type your username" />
-						<span class="focus-input100" data-symbol="&#xf206;"></span>
-					</div>
-
 					<div class="wrap-input100 validate-input" data-validate = "ID is required">
 						<span class="label-input100">ID</span>
-						<input class="input100" type="number" name="" placeholder="Type your ID" />
+						<input class="input100" type="text" name="id" placeholder="Type your ID" />
 						<span class="focus-input100" data-symbol="&#xf206;"></span>
 					</div>
 
