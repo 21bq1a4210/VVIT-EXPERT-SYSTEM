@@ -1,13 +1,12 @@
 import React ,{Component} from "react";
-import Navbar from "./Navbar";
-import Body from "./Body";
+import LoginPage from "./components/LoginPage/LoginPage";
+import "./App.css"
 
 class App extends Component{
   render(){
     return(
-      <div>
-        <Navbar/>
-        <Body/>
+      <div className="app-body">
+        <LoginPage/>
       </div>
     );
   }
