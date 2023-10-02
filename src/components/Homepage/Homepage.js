@@ -1,13 +1,20 @@
 import React ,{Component}from "react";
 import "./Homepage.css"
-
+import Swal from "sweetalert2";
 
 class Homepage extends Component{
 
     constructor(){
         super()
         this.state = {
-
+            name:"",
+            registration:'',
+            email:'',
+            desig:'',
+            department:'',
+            year:'',
+            type:'',
+            grevience:'',
         }
     }
     clicked = ()=>{
@@ -21,6 +28,57 @@ class Homepage extends Component{
             document.getElementById("sidenav").style.display="";
             document.getElementById("open-close-btn").style.marginRight = "10px"
         }
+    }
+
+    update = () =>{
+        fetch('http://localhost:8000',{
+            method:"POST",
+            body : JSON.stringify(
+                {   name: document.getElementById('input-name').value, 
+                    registration:document.getElementById('input-reg').value,
+                    email:document.getElementById('input-email').value,
+                    desig:document.querySelector('input[name="who"]:checked').value,
+                    department:document.getElementById('dept-input').value,
+                    year:document.getElementById('year').value,
+                    type:document.getElementById('type').value,
+                    grevience:document.getElementById('comp-input').value
+                    }
+            ),
+            headers:{
+                'Content-type':'application/json'
+            }
+        }
+        ).then(res => res.json())
+        .then(res=>console.log(res))
+        .then(() => {
+            let timerInterval
+            Swal.fire({
+              title: 'Success',
+              html: 'Successfully Submitted.',
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: () => {
+                Swal.showLoading()
+              },
+              willClose: () => {
+                clearInterval(timerInterval)
+              }
+            }).then((result) => {
+              /* Read more about handling dismissals below */
+              if (result.dismiss === Swal.DismissReason.timer) {
+                console.log('I was closed by the timer')
+              }
+            })
+        })
+        .catch((error)=>{
+            console.log(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+                // footer: '<a href="">Why do I have this issue?</a>'
+              })
+        });
     }
 
    render(){
@@ -47,43 +105,42 @@ class Homepage extends Component{
                 <div className="form-container">
                     <h3>Grevience Form</h3>
                     <div className="g-form-container">
-                        <form className="g-form">
                             <div className="g-form-name g-form-e">
                                 <label className="l label-name g-form-name-l">Full Name of The Complaintant(student or faculty)</label>
-                                <input type="text" className="g-form-name-in in input-name"/>
+                                <input type="text" className="g-form-name-in in input-name input" id="input-name"/>
                             </div>
                             <div className="g-form-reg g-form-e">
                                 <label className="l label-reg g-form-reg-l">Registration Number</label>
-                                <input type="text" className="g-form-reg-in in input-reg"/>
+                                <input type="text" className="g-form-reg-in in input-reg input" id="input-reg"/>
                             </div>
                             <div className="g-form-email g-form-e">
                                 <label className="g-form-email-l l label-email">Email</label>
-                                <input type="email" className="g-form-email-in in input-email"/>
+                                <input type="email" className="g-form-email-in in input-email input" id="input-email"/>
                             </div>
                             <div className="g-form-who g-form-e">
                                 <label className="g-form-who-l l label-who">Who are you ?</label>
                                 <div className="g-form-who-opt">
                                     <div>
-                                        <input type="radio" value="student" id="whoareyou" name="who"/>
+                                        <input type="radio" value="Student" id="whoareyou" name="who"/>
                                         <label>Student</label>
                                     </div>
                                     <div>
-                                        <input type="radio" value="faculty" id="whoareyou" name="who"/>
+                                        <input type="radio" value="Faculty" id="whoareyou" name="who"/>
                                         <label>Faculty</label>  
                                     </div>
                                 </div>
                             </div>
                             <div className="g-form-dept g-form-e">
                                 <label className="g-form-dept-l l label-dept">Department</label>
-                                <select name="dept" className="in">
-                                    <option value="cse">CSE</option>
-                                    <option value="csm">CSM</option>
-                                    <option value="cic">CIC</option>
-                                    <option value="cso">CSO</option>
-                                    <option value="it">IT</option>
-                                    <option value="mech">MECH</option>
-                                    <option value="civil">CIVIL</option>
-                                    <option value="aiml">AIML</option>
+                                <select name="dept" className="in" id="dept-input">
+                                    <option value="CSE">CSE</option>
+                                    <option value="CSM">CSM</option>
+                                    <option value="CIC">CIC</option>
+                                    <option value="CSO">CSO</option>
+                                    <option value="IT">IT</option>
+                                    <option value="MECH">MECH</option>
+                                    <option value="CIVIL">CIVIL</option>
+                                    <option value="AIML">AIML</option>
                                     <option value="EEE">EEE</option>
                                     <option value="ECE">ECE</option>
                                     <option value="AIDS">AIDS</option>
@@ -101,22 +158,21 @@ class Homepage extends Component{
                             </div>
                             <div className="g-form-g g-form-e">
                                 <label className="g-form-g-l l label-g">Type of Grevience</label>
-                                <select name="g" id="g" className="in">
-                                    <option value="academic">Academic</option>
-                                    <option value="non-academic">Non-Academic</option>
-                                    <option value="discrimination">Discrimination</option>
+                                <select name="g" id="type" className="in">
+                                    <option value="Academic">Academic</option>
+                                    <option value="Non-Academic">Non-Academic</option>
+                                    <option value="Discrimination">Discrimination</option>
                                 </select>
                             </div>
                             <div className="g-form-form g-form-e">
                                 <label className="g-form-type label-type l">Grevience column</label>
-                                <textarea placeholder="enter your complaints" className="input-textarea in" style={{resize:"none"}}>
+                                <textarea placeholder="enter your complaints" className="input-textarea in" id="comp-input" style={{resize:"none"}}>
 
                                 </textarea>
                             </div>
                             <div className="g-form-submit g-form-e">
-                                <input className="g-form-sub-in in input-submit" type="submit" value="Submit"/>
+                                <input className="g-form-sub-in in input-submit" type="submit" value="Submit" onClick={this.update}/>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -124,6 +180,5 @@ class Homepage extends Component{
     )
    }
 }
-
 
 export default Homepage

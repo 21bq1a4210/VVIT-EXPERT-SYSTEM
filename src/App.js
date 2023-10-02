@@ -5,6 +5,7 @@ import "./App.css"
 import { BrowserRouter , Route ,Routes } from "react-router-dom";
 
 class App extends Component{
+  
   render(){
     return(
       <BrowserRouter basename="/">
