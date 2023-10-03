@@ -16,9 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from  form.views import ResponseView
+from form.views import ResponseView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',ResponseView.as_view(),name="response")
+    path('api/info',ResponseView.as_view(),name="response")
 ]

@@ -1,6 +1,7 @@
 import smtplib
 from email.message import EmailMessage
 import ssl
+from .models import StudentModel, CounsellorModel
 
 def MailToCounseller(data):
     sender = 'greviencevvit@gmail.com'
